@@ -1,0 +1,33 @@
+server:
+  port: 5555
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/users/**
+        - id: appointment-service
+          uri: lb://appointment-service
+          predicates:
+            - Path=/api/appointments/**
+        - id: patient-service
+          uri: lb://patient-service
+          predicates:
+            - Path=/api/patients/**
+        - id: clinician-service
+          uri: lb://clinician-service
+          predicates:
+            - Path=/api/clinicians/**
+        - id: messaging-service
+          uri: lb://messaging-service
+          predicates:
+            - Path=/api/messaging/**
+        - id: questionnaire-service
+          uri: lb://questionnaire-service
+          predicates:
+            - Path=/api/questionnaires/**
