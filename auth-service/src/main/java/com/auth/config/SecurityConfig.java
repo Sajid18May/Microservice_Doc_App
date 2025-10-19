@@ -23,8 +23,9 @@ public class SecurityConfig {
 	private LoginService loginService;
 	private JwtFilter filter;
 	
-	public SecurityConfig(LoginService loginService) {
+	public SecurityConfig(LoginService loginService, JwtFilter filter) {
 		this.loginService = loginService;
+		this.filter = filter;
 	}
 
 	@Bean
