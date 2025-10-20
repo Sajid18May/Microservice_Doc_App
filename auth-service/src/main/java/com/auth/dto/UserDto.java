@@ -1,11 +1,13 @@
 package com.auth.dto;
 
+import com.auth.model.Role;
+
 public class UserDto {
 	private long id;
 	private String username;
 	private String email;
 	private String password;
-	private String role;
+	private Role role;
 	public long getId() {
 		return id;
 	}
@@ -30,11 +32,12 @@ public class UserDto {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getRole() {
+	public Role getRole() {
 		return role;
 	}
-	public void setRole(String role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
+	
 	
 }

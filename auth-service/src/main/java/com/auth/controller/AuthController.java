@@ -5,7 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,15 +33,17 @@ public class AuthController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<APIResponse<String>> userLogin(LoginDto dto) {
+	public ResponseEntity<APIResponse<String>> userLogin(@RequestBody LoginDto dto) {
 		APIResponse<String> response = new APIResponse<>();
 		UsernamePasswordAuthenticationToken passwordAuthenticationToken= new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword());
 		Authentication authentication=authenticationManager.authenticate(passwordAuthenticationToken);
 		if(authentication.isAuthenticated()) {
-			jwtService.generateJwtToken(dto.getUsername(), authentication.getAuthorities().iterator().next().getAuthority());
+			System.out.println("Authorities in token: " + authentication.getAuthorities());
+
+			String jwtToken = jwtService.generateJwtToken(dto.getUsername(), authentication.getAuthorities().iterator().next().getAuthority());
 			response.setStatus(200);
 			response.setMessage("Welcome "+dto.getUsername());
-			response.setData("Login Successful");
+			response.setData(jwtToken);
 			return new ResponseEntity<APIResponse<String>>(response, HttpStatusCode.valueOf(response.getStatus()));
 		}
 		response.setStatus(401);
@@ -49,9 +53,21 @@ public class AuthController {
 	}
 	
 	@PostMapping("/register")
-	public ResponseEntity<APIResponse<String>> userRestration(UserDto dto) {
+	public ResponseEntity<APIResponse<String>> userRestration(@RequestBody UserDto dto) {
 		APIResponse<String> response = authService.registerUser(dto);
 		return new ResponseEntity<APIResponse<String>>(response, HttpStatusCode.valueOf(response.getStatus()));
 	}
+	
+	@GetMapping("/welcome")
+	public ResponseEntity<APIResponse<String>> welcome() {
+		
+		APIResponse<String> apiResponse = new APIResponse<>();
+		apiResponse.setMessage("Hello Admin");
+		apiResponse.setStatus(200);
+		apiResponse.setData("Welcome Admin !!");
+		
+		return new ResponseEntity<APIResponse<String>>(apiResponse,HttpStatusCode.valueOf(apiResponse.getStatus()));
+	}
+
 
 }

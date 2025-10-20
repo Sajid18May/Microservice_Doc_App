@@ -1,6 +1,10 @@
 package com.auth.entity;
 
+import com.auth.model.Role;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,7 +17,9 @@ public class AppUser {
 	private String username;
 	private String email;
 	private String password;
-	private String role;
+	
+	@Enumerated(EnumType.STRING)
+	private Role role;
 	public long getId() {
 		return id;
 	}
@@ -38,12 +44,11 @@ public class AppUser {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getRole() {
+	public Role getRole() {
 		return role;
 	}
-	public void setRole(String role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 	
-
 }

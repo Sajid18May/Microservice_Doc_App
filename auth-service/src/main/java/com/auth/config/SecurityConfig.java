@@ -48,7 +48,11 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http.csrf(csrf->csrf.disable())
-				.authorizeHttpRequests(req->req.anyRequest().permitAll())
+				.authorizeHttpRequests(req->req.requestMatchers("/auth/register","/auth/login")
+						.permitAll()
+						.requestMatchers("/auth/welcome")
+						.hasAuthority("ROLE_ADMIN")
+						.anyRequest().authenticated())
 				.authenticationProvider(authenticationProvider())
 				.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
 				.build();

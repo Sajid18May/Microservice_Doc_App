@@ -21,8 +21,9 @@ public class LoginService implements UserDetailsService{
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		AppUser user = authRepository.findAppUserByUsername(username).get();	
-		return new User(username, user.getPassword(),Collections.singleton(new SimpleGrantedAuthority(user.getRole())));
+		AppUser user = authRepository.findAppUserByUsername(username).get();
+		String roleName = user.getRole().name();
+		return new User(username, user.getPassword(),Collections.singleton(new SimpleGrantedAuthority(roleName)));
 	}
 
 }
